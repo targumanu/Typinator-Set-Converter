@@ -297,7 +297,7 @@ are “pseudo-Boolean”, where “true”, “yes” or “1” is case-insensi
 		<string></string>
 	</dict>
 	<key>version</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>webaddress</key>
 	<string></string>
 </dict>
