@@ -12,7 +12,7 @@ Download and install the [latest realse](https://github.com/targumanu/Typinator-
 
 - Select one or more Typinator snippet sets exported as `TXT` files
 - Invoke Alfred’s file actions pane
-- Select `Convert Typinator Set(s)`
+- Select `Convert Typinator Sets`
 - Press `Enter`
 
 ### Options
