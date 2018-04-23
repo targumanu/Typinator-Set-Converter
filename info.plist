@@ -125,10 +125,10 @@
 				<integer>0</integer>
 				<key>script</key>
 				<string># THESE VARIABLES MUST BE SET. SEE THE ONEUPDATER README FOR AN EXPLANATION OF EACH.
-readonly remote_info_plist=''
+readonly remote_info_plist='https://raw.githubusercontent.com/targumanu/Typinator-Set-Converter/master/info.plist'
 readonly workflow_url='https://raw.githubusercontent.com/targumanu/Typinator-Set-Converter/master/Typinator%20Set%20Converter.alfredworkflow'
 readonly download_type='direct'
-readonly frequency_check=''
+readonly frequency_check='1'
 
 # FROM HERE ON, CODE SHOULD BE LEFT UNTOUCHED!
 function abort {
@@ -297,7 +297,7 @@ are “pseudo-Boolean”, where “true”, “yes” or “1” is case-insensi
 		<string></string>
 	</dict>
 	<key>version</key>
-	<string>1.0.0</string>
+	<string>1.0.1</string>
 	<key>webaddress</key>
 	<string></string>
 </dict>
