@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.targumanu.typinatorsetconverter</string>
+	<key>connections</key>
+	<dict>
+		<key>54075FDC-449E-42B8-A273-540A0A9A9F0A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>E547FE52-F179-4FC4-9A40-1FAB850677A0</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>235EE645-E62A-4231-9802-5C8714BF1A8E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>E547FE52-F179-4FC4-9A40-1FAB850677A0</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>81BD54AC-CF31-4FC3-99AC-941AE7F5FB5A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Michael Matochkin</string>
+	<key>description</key>
+	<string></string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Typinator Set Converter</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>./TypinatorSetConverter "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>E547FE52-F179-4FC4-9A40-1FAB850677A0</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>acceptsmulti</key>
+				<true/>
+				<key>filetypes</key>
+				<array>
+					<string>public.plain-text</string>
+				</array>
+				<key>name</key>
+				<string>Convert Typinator Set(s)</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.action</string>
+			<key>uid</key>
+			<string>54075FDC-449E-42B8-A273-540A0A9A9F0A</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Typinator Set Converter</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>81BD54AC-CF31-4FC3-99AC-941AE7F5FB5A</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string># THESE VARIABLES MUST BE SET. SEE THE ONEUPDATER README FOR AN EXPLANATION OF EACH.
+readonly remote_info_plist=''
+readonly workflow_url='https://raw.githubusercontent.com/targumanu/Typinator-Set-Converter/master/Typinator%20Set%20Converter.alfredworkflow'
+readonly download_type='direct'
+readonly frequency_check=''
+
+# FROM HERE ON, CODE SHOULD BE LEFT UNTOUCHED!
+function abort {
+  echo "${1}" &gt;&amp;2
+  exit 1
+}
+
+function url_exists {
+  curl --silent --location --output /dev/null --fail --range 0-0 "${1}"
+}
+
+function notification {
+  readonly local notificator="$(find . -type d -name 'Notificator.app')"
+  if [[ -n "${notificator}" ]]; then
+    "${notificator}/Contents/Resources/Scripts/notificator" --message "${1}" --title "${alfred_workflow_name}" --subtitle 'A new version is available'
+    return
+  fi
+
+  readonly local terminal_notifier="$(find . -type f -name 'terminal-notifier')"
+  if [[ -n "${terminal_notifier}" ]]; then
+    "${terminal_notifier}" -title "${alfred_workflow_name}" -subtitle 'A new version is available' -message "${1}"
+    return
+  fi
+
+  osascript -e "display notification \"${1}\" with title \"${alfred_workflow_name}\" subtitle \"A new version is available\""
+}
+
+# Local sanity checks
+readonly local_info_plist='info.plist'
+readonly local_version="$(/usr/libexec/PlistBuddy -c 'print version' "${local_info_plist}")"
+
+[[ -n "${local_version}" ]] || abort 'You need to set a workflow version in the configuration sheet.'
+[[ "${download_type}" =~ ^(direct|page|github_release)$ ]] || abort "'download_type' (${download_type}) needs to be one of 'direct', 'page', or 'github_release'."
+[[ "${frequency_check}" =~ ^[0-9]+$ ]] || abort "'frequency_check' (${frequency_check}) needs to be a number."
+
+# Check for updates
+if [[ $(find "${local_info_plist}" -mtime +"${frequency_check}"d) ]]; then
+  if ! url_exists "${remote_info_plist}"; then abort "'remote_info_plist' (${remote_info_plist}) appears to not be reachable."; fi # Remote sanity check
+
+  readonly tmp_file="$(mktemp)"
+  curl --silent --location --output "${tmp_file}" "${remote_info_plist}"
+  readonly remote_version="$(/usr/libexec/PlistBuddy -c 'print version' "${tmp_file}")"
+
+  if [[ "${local_version}" == "${remote_version}" ]]; then
+    touch "${local_info_plist}" # Reset timer by touching local file
+    exit 0
+  fi
+
+  if [[ "${download_type}" == 'page' ]]; then
+    notification 'Opening download page…'
+    open "${workflow_url}"
+    exit 0
+  fi
+
+  download_url="$([[ "${download_type}" == 'github_release' ]] &amp;&amp; curl --silent "https://api.github.com/repos/${workflow_url}/releases/latest" | grep 'browser_download_url' | head -1 | sed -E 's/.*browser_download_url": "(.*)"/\1/' || echo "${workflow_url}")"
+
+  if url_exists "${download_url}"; then
+    notification 'Downloading and installing…'
+    curl --silent --location --output "${HOME}/Downloads/${alfred_workflow_name}.alfredworkflow" "${download_url}"
+    open "${HOME}/Downloads/${alfred_workflow_name}.alfredworkflow"
+  else
+    abort "'workflow_url' (${download_url}) appears to not be reachable."
+  fi
+fi</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>235EE645-E62A-4231-9802-5C8714BF1A8E</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Convert Typinator sets exported as plain text files to Alfred’s snippet collections.
+
+Available options:
+- customicon		Use the custom icon for created snippet collections
+- dontautoexpand	Disable automatic expansion for all snippets
+				of the converted collection
+- dontcompress	Do not compress the folder with the converted
+				snippets. This option may be useful, if you
+				want to make some manual changes to the converted
+				snippets.
+				To compress manually, just zip the folder and
+				change its extension from “zip” to “alfredsnippets”
+- noprefix		Do not use any prefixes for converted sets.
+				Even if all keywords in a set have the same prefix,
+				the keywords will remain unchanged, and no prefix 				will be added to this set’s preferences.
+- nosuffix		Do not use any suffixes for converted sets.
+				Even if all keywords in a set have the same suffix,
+				the keywords will remain unchanged, and no suffix 				will be added to this set’s preferences.
+- prefix			Force the specified prefix for all converted
+				snippet sets.
+				The specified prefix will be added to the
+				preferences of converted snippet sets.
+				If a snippet keyword has the specified prefix,
+				it will be removed from the keyword
+				(e.g. “//alfd” will become “alfd”)
+- suffix			Force the specified suffix for all converted
+				snippet sets.
+				The specified suffix will be added to the
+				preferences of converted snippet sets.
+				If a snippet keyword has the specified suffix,
+				it will be removed from the keyword
+				(e.g. “alfd//” will become “alfd”)
+
+All the configuration variables, except “prefix” and “suffix”,
+are “pseudo-Boolean”, where “true”, “yes” or “1” is case-insensitively interpreted as “true”, and any other value or no value means “false”.</string>
+	<key>uidata</key>
+	<dict>
+		<key>235EE645-E62A-4231-9802-5C8714BF1A8E</key>
+		<dict>
+			<key>colorindex</key>
+			<integer>12</integer>
+			<key>note</key>
+			<string>OneUpdater</string>
+			<key>xpos</key>
+			<integer>370</integer>
+			<key>ypos</key>
+			<integer>290</integer>
+		</dict>
+		<key>54075FDC-449E-42B8-A273-540A0A9A9F0A</key>
+		<dict>
+			<key>xpos</key>
+			<integer>140</integer>
+			<key>ypos</key>
+			<integer>130</integer>
+		</dict>
+		<key>81BD54AC-CF31-4FC3-99AC-941AE7F5FB5A</key>
+		<dict>
+			<key>xpos</key>
+			<integer>600</integer>
+			<key>ypos</key>
+			<integer>130</integer>
+		</dict>
+		<key>E547FE52-F179-4FC4-9A40-1FAB850677A0</key>
+		<dict>
+			<key>xpos</key>
+			<integer>370</integer>
+			<key>ypos</key>
+			<integer>130</integer>
+		</dict>
+	</dict>
+	<key>variables</key>
+	<dict>
+		<key>customicon</key>
+		<string>true</string>
+		<key>dontautoexpand</key>
+		<string></string>
+		<key>dontcompress</key>
+		<string></string>
+		<key>noprefix</key>
+		<string></string>
+		<key>nosuffix</key>
+		<string></string>
+		<key>prefix</key>
+		<string></string>
+		<key>suffix</key>
+		<string></string>
+	</dict>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
