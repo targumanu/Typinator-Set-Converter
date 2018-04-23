@@ -14,7 +14,7 @@ The workflow uses [OneUpdater](https://github.com/vitorgalvao/alfred-workflows/t
 
 ### Installation
 
-Download and install the [latest realse](https://github.com/targumanu/Typinator-Set-Converter/releases/latest).
+Download and install the [latest release](https://github.com/targumanu/Typinator-Set-Converter/releases/latest).
 
 ### Usage
 
