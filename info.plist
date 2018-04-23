@@ -86,7 +86,7 @@
 					<string>public.plain-text</string>
 				</array>
 				<key>name</key>
-				<string>Convert Typinator Set(s)</string>
+				<string>Convert Typinator Sets</string>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.trigger.action</string>
@@ -297,7 +297,7 @@ are “pseudo-Boolean”, where “true”, “yes” or “1” is case-insensi
 		<string></string>
 	</dict>
 	<key>version</key>
-	<string>1.0.0</string>
+	<string>1.0.1</string>
 	<key>webaddress</key>
 	<string></string>
 </dict>
