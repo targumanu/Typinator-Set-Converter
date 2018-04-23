@@ -2,7 +2,7 @@
 
 # Typinator Set Converter
 
-Alfred file action for converting Typinator sets to Alfred’s snippet collections
+Alfred file action for converting Typinator sets to Alfred snippet collections
 
 The workflow supports only Typinator sets exported as plain text files.
 (.tyset and .typubset are proprietary binary formats and cannot be read)
