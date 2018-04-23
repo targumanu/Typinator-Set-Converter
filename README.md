@@ -4,13 +4,13 @@
 
 Alfred file action for converting Typinator sets to Alfred snippet collections
 
-The workflow supports only Typinator sets exported as plain text files.
+The workflow supports only Typinator sets exported as plain text files.<br/>
 (.tyset and .typubset are proprietary binary formats and cannot be read)
  
-When converting Typinator snippets, the workflow replaces Typinator’s cursor marker `{^}` with Alfred’s cursor placeholder `{cursor}`.
+When converting Typinator snippets, the workflow replaces Typinator’s cursor marker `{^}` with Alfred’s cursor placeholder `{cursor}`.<br/>
 Other Typinator markers are not supported.
  
-The workflow uses [OneUpdater](https://www.alfredforum.com/topic/9224-oneupdater-—-update-workflows-with-a-single-node/) for automatic updates.
+The workflow uses [OneUpdater](https://github.com/vitorgalvao/alfred-workflows/tree/master/OneUpdater) for automatic updates.
 
 ### Installation
 
